@@ -3,22 +3,69 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="Style.css">
   </head>
   <body>
+  <img src="http://s3.amazonaws.com/rapgenius/cats-animals-kittens-background.jpg" height="150" width="250">
+  <center>
+    Twittler<br>
+    <button>New Tweets</button>
+  </center>
+  <div class="container">
+    <div class="displayTweet">
+    </div>
+  </div>
     <script>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+      $(document).ready(function(){
+        var tweeting = function(){
+          for(var i = 0; i<streams.home.length;i++){
+            var tweet = streams.home[i];
+            var $tweet = $('<p></p>');
+            $tweet.html('@'+'<span class="userName">'+tweet.user+ '</span>'+': ' +tweet.message+ ': ' + tweet.created_at);
+            $tweet.prependTo($('.displayTweet'))  
+          };
+        };
+        var IndividualTweet = function(user){
+          for(var i = 0; i<streams.users[user].length;i++){
+            var tweet = streams.users[user][i];
+            var $tweet = $('<p></p>');
+            $tweet.html('@'+tweet.user+': '+tweet.message+': '+tweet.created_at)
+            $tweet.prependTo($('.displayTweet'))  
+
+          }  
+        };
+
+
+        tweeting();
+
+        $('button').on('click', function(){
+          tweeting();
+        });
+
+        $('.displayTweet').on('click', '.userName',function(){
+          $('p').remove();
+          var user = $(this).text()
+          IndividualTweet(user)
+        })
+
+        
+        
+
+
+
+        // var $body = $('body');
+        // $body.html('');
+
+        // var index = streams.home.length - 1;
+        // while(index >= 0){
+        //   var tweet = streams.home[index];
+        //   var $tweet = $('<div></div>');
+        //   $tweet.text('@' + tweet.user + ': ' + tweet.message);
+        //   $tweet.appendTo($body);
+        //   index -= 1;
+        // }
 
       });
 
